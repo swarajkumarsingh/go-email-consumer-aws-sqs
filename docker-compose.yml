@@ -1,24 +1,6 @@
 version: "3.9"
 
 services:
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    restart: on-failure
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    ports:
-      - 3000:3000
-    restart: on-failure
-    volumes:
-      - grafana-storage:/var/lib/grafana
-
   golang:
     container_name: golang_container
     build:
@@ -33,12 +15,6 @@ services:
     ports:
       - 8080:8080
     restart: on-failure
-    depends_on:
-      - grafana
-      - prometheus
     # For Dockerfile.Local only
     # volumes:
     #   - ./:/app
-
-volumes:
-  grafana-storage: {}
