@@ -14,6 +14,7 @@ import (
 
 const (
 	sesSenderEmail = "swaraj.singh.wearingo@gmail.com"
+	sesSampleRecipientEmail = "swaraj.singh.wearingo@gmail.com"
 )
 
 func main() {
@@ -47,15 +48,22 @@ func main() {
 
 			recipientEmail := aws.StringValue(msg.Body)
 			fmt.Printf("Sending email to %s\n", recipientEmail)
+
+			// validate email
+			valid := utils.ValidEmail(recipientEmail)
+			if !valid {
+				log.Println("invalid email address: ", recipientEmail)
+				continue
+			}
 			
-			_, err := ses.SendEmail(sesSenderEmail, sesSenderEmail, "subject", "<h1>test</h1>", "test", "UTF-8")
+			_, err := ses.SendEmail(sesSenderEmail, sesSampleRecipientEmail, "subject", "<h1>test</h1>", "test", "UTF-8")
 			if err != nil {
 				log.Printf("Error sending email: %v", err)
 			}
 
 			// Delete the processed message from the SQS queue
 			_, err = sqsSvc.DeleteMessage(&sqs.DeleteMessageInput{
-				QueueUrl:      aws.String("https://sqs.ap-south-1.amazonaws.com/248229095548/email-queue.fifo"),
+				QueueUrl:      aws.String(conf.AWS_SQS_URL),
 				ReceiptHandle: msg.ReceiptHandle,
 			})
 			if err != nil {
