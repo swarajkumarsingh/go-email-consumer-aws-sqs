@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/swarajkumarsingh/go-email-consumer-aws-sqs/conf"
+	"github.com/swarajkumarsingh/go-email-consumer-aws-sqs/utils"
 	"github.com/swarajkumarsingh/go-email-consumer-aws-sqs/ses"
 )
 
